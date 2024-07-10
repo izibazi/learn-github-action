@@ -1,0 +1,16 @@
+name: Dump
+on: push
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/dump
+        id: dump
+        with:
+          github-context-enabled: "true"
+      - run: echo "${DUMPED_DATE}"
+        shell: bash
+        env:
+          DUMPED_DATE: ${{ steps.dump.outputs.dumped-date }}

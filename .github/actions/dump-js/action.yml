@@ -1,0 +1,12 @@
+name: Dump by JavaScript
+description: |
+  JavaScript を使って環境変数と github コンテキストを出力します。
+inputs:
+  github-context-enabled:
+    description: github コンテキストのログを出力します。
+    default: "true"
+    required: false
+
+runs:
+  using: node20
+  main: main.js

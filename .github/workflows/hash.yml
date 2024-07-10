@@ -1,0 +1,12 @@
+name: hashFiles
+on: workflow_dispatch
+
+jobs:
+  hash-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - run: echo "${HASH}"
+        env:
+          HASH: ${{ hashFiles('.github/workflows/*.yml') }}

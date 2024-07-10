@@ -1,0 +1,33 @@
+name: Contexts
+on: workflow_dispatch
+
+env:
+  SON_1: "かんた"
+  SON_2: "せいた"
+  SON_3: "こた"
+  SEITA: "セイタ"
+jobs:
+  contexts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print context
+        run: |
+          echo "${CI}"
+          echo "${GITHUB_OUTPUT}"
+          echo "${GITHUB_ENV}"
+          echo "${GITHUB_RUN_ID}"
+          echo "${SEITA}"
+          echo "${hoge}"
+          echo "ENV_CONTEXT: ${ENV_CONTEXT}"
+          echo "GITHUB_CONTEXT: ${GITHUB_CONTEXT}"
+          echo "RUNNER_CONTEXT: ${RUNNER_CONTEXT}"
+          echo "VARS_CONTEXT: ${VARS_CONTEXT}"
+          echo "SECRETS_CONTEXT: ${SECRETS_CONTEXT}"
+        env:
+          SEITA: "seita"
+          hoge: "kanta"
+          ENV_CONTEXT: ${{ toJson(env) }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+          RUNNER_CONTEXT: ${{ toJson(runner)}}
+          VARS_CONTEXT: ${{ toJson(vars)}}
+          SECRETS_CONTEXT: ${{ toJson(secrets)}}

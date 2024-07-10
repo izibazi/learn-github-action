@@ -1,0 +1,38 @@
+name: Parallel jobs
+on: workflow_dispatch
+
+jobs:
+  first:
+    runs-on: ubuntu-latest
+    outputs:
+      hoge: ${{ steps.step1.outputs.hoge }}
+    steps:
+      - name: Step 1
+        id: step1
+        run: |
+          sleep 1
+          echo "Step 1"
+          echo "hoge=kanta" >> "${GITHUB_OUTPUT}"
+      - name: Summary Step1
+        run: |
+          {
+            echo "## Step 1"
+            echo "- hoge: ${{ steps.step1.outputs.hoge }}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+  second:
+    runs-on: ubuntu-latest
+    needs: [first]
+    steps:
+      - name: Step 2
+        run: |
+          echo "Step 2 ${FIRST_OUTPUT}"
+          {
+            echo "---"
+            echo "# Step 2"
+            echo "## Step 2"
+            echo "### Step 2"
+            echo "**Step 2**"
+            echo "hoge=${FIRST_OUTPUT}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+        env:
+          FIRST_OUTPUT: ${{ needs.first.outputs.hoge }}

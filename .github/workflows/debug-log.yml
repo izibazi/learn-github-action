@@ -1,0 +1,33 @@
+name: Debug log
+on: workflow_dispatch
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Markdown
+        run: |
+          echo "${GITHUB_STEP_SUMMARY}"
+          {
+            echo "## Example Title :rocket:"
+            echo "- fine line"
+            echo "- second line"
+            echo "- hoge"
+          } >> "${GITHUB_STEP_SUMMARY}"
+      - run: echo "::debug::Hello, debug log!"
+      - run: |
+          echo "::group:: Show environment variables"
+          printenv
+          echo "::endgroup::"
+          echo "::add-mask::${{ github.repository}}"
+      - name: Annotation
+        run: |
+          echo "::error:: ReversidService failed"
+          echo "::warning:: The Version is ole。Please update"
+          echo "::notice:: The Version updated!"
+      - name: Cancel
+        if: always()
+        id: slack
+        uses: slackapi/slack-github-action@v1.26.0
+        env:
+          SLACK_WEBHOOK_URL: "https://hooks.slack.com/services/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"
