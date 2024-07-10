@@ -1,0 +1,15 @@
+name: Conditions
+on: workflow_dispatch
+
+jobs:
+  conditions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "run ${RUN_ID}"
+        if: ${{ env.RUN_ID == 1}}
+        env:
+          RUN_ID: ${{ github.run_id }}
+      - run: echo "not run ${RUN_ID}"
+        if: ${{ github.run_id != 1 }}
+        env:
+          RUN_ID: ${{ github.run_id }}

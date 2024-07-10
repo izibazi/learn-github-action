@@ -1,0 +1,27 @@
+name: Manual
+on:
+  workflow_dispatch:
+    inputs:
+      greeting:
+        description: 挨拶
+        type: string
+        default: Hello
+        required: true
+      to:
+        description: 送り先
+        type: choice
+        default: seita
+        options:
+          - kanta
+          - seita
+          - kota
+          - takumi
+          - kenshiro
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greeting
+        run: |
+          echo ${{ inputs.greeting }} to ${{ inputs.to }}

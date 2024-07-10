@@ -1,0 +1,36 @@
+name: Status check
+on: workflow_dispatch
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running"
+      - name: output name
+        id: step1
+        run: |
+          echo "name=hogehoge love you" >> $GITHUB_OUTPUT
+          echo "env_name=envenv love you" >> $GITHUB_ENV
+      - run: |
+          echo "step1 name is ${NAME}"
+          echo "env_name is ${ENV_NAME_}"
+          echo "env_name is ${env_name}"
+          echo "Running"
+          exit 1
+        env:
+          NAME: ${{ steps.step1.outputs.name }}
+          ENV_NAME_: ${{ env.env_name }}
+      - run: echo "All good!"
+        if: success()
+      - run: echo "failed!"
+        if: failure()
+      - run: echo "chanceled"
+        if: cancelled()
+      - run: echo "always!"
+        if: always()
+  cleanup:
+    if: success()
+    needs: status
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cleaning up"

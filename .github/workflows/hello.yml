@@ -1,0 +1,20 @@
+name: Hello
+on: workflow_dispatch
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, world!"
+      - run: |
+          git log -1
+          tree -a .
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+  cleanup:
+    needs: hello
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Cleaning up"
