@@ -1,0 +1,24 @@
+name: Literals
+on: workflow_dispatch
+
+jobs:
+  use-literals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print literals
+        run: |
+          echo "${JOIN}"
+          echo "${FORMAT}"
+        env:
+          LITERAL_null: ${{ null }}
+          LITERAL_true: ${{ true }}
+          LITERAL_false: ${{ false }}
+          LITERAL_num: ${{ 123 }}
+          LITERAL_str: ${{ 'string' }}
+          LITERAL_str_2: hoge
+          FILTER: ${{ toJson(github.event.*) }}
+          FUNC_CONTAINS: ${{ contains('hoge', 'ho') }}
+          FUNC_STARTWITH: ${{ startsWith('hoge', 'ho') }}
+          FUNC_ENDWITH: ${{ endsWith('hoge', 'ho') }}
+          JOIN: ${{ join(github.event.*.html_url, '_') }}
+          FORMAT: ${{ format('{0} - {1}', 'a', 'b')}}

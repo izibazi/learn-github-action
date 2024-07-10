@@ -1,0 +1,14 @@
+name: Comment
+on: workflow_dispatch
+
+jobs:
+  comment-to-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Comment to PR
+        run: |
+          gh pr comment ${{ github.event.number }} --body "Hello, world! ${{ github.actor}}"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
