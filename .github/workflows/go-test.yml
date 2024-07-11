@@ -5,6 +5,11 @@ on:
       - "**/*.go"
     branches:
       - main
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
 
 jobs:
   go-test:
