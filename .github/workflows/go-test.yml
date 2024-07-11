@@ -4,7 +4,7 @@ on:
     paths:
       - "**/*.go"
     branches:
-      - go-pr
+      - main
 
 jobs:
   go-test:
