@@ -1,5 +1,7 @@
 name: Auto merge
-on: pull_request
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   merge:
@@ -11,4 +13,4 @@ jobs:
       - name: merge
         run: |
           echo "${GITHUB_HEAD_REF}"
-          gh pr merge "${GITHUB_HEAD_REF}" ${{ github.event.number}} --merge
+          gh pr merge "${GITHUB_HEAD_REF}" --merge
