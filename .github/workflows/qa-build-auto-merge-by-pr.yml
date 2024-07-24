@@ -1,0 +1,44 @@
+name: QA Build Auto Merge by PR
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  auto-merge:
+    strategy:
+      matrix:
+        base: [build/qa_a, build/qa_b, feature/16.0.0]
+        head: [main]
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Auto merge
+        run: |
+          git switch ${{ matrix.head }}
+          echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
+          git switch -c "${HEAD}"
+          git fetch
+          git switch "${BASE}"
+          diff=$(git diff "${BASE}" "${HEAD}")
+          if [ -z "$diff" ]; then
+            echo "No changes between ${BASE} and ${HEAD}"
+            exit 0
+          fi
+          git switch "${HEAD}"
+          git push origin -f "${HEAD}"
+          gh pr create --base "${BASE}" --head "${HEAD}" --title "$HEAD" --body "$HEAD\nこの PR は [GitHub Action] $GITHUB_WORKFLOW によって生成されました。"
+          gh pr merge --merge --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD: auto_merge_${{ matrix.head }}_into_${{ matrix.base }}
+          BASE: ${{ matrix.base }}
+      - name: Clean up
+        if: always()
+        run: |
+          echo "HEAD=${HEAD}"
+          # git push origin --delete "${HEAD}"
