@@ -15,6 +15,10 @@ jobs:
       pull-requests: write
       contents: write
     steps:
+      - name: Dump context
+        run: echo ${CONTEXT}
+        env:
+          CONTEXT: ${{ toJson(github) }}
       - name: Checkout
         uses: actions/checkout@v4
       - name: Auto merge
