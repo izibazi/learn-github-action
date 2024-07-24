@@ -31,7 +31,7 @@ jobs:
           git switch "${HEAD}"
           git push origin -f "${HEAD}"
           gh pr create --base "${BASE}" --head "${HEAD}" --title "$HEAD" --body "$HEAD"
-          gh pr merge --merge --auto
+          gh pr merge --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD: auto_merge_${{ matrix.head }}_into_${{ matrix.base }}
