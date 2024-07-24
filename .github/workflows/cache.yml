@@ -1,9 +1,7 @@
 name: QA Build Auto merge
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * *"
-  push:
+
 jobs:
   auto-merge:
     strategy:
@@ -13,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
