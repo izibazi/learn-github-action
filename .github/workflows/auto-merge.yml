@@ -16,22 +16,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: create head
-        run: |
-          git switch ${{ matrix.head }}
-          echo "${HEAD}"
-          echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
-        env:
-          HEAD: ${{ matrix.head }}_to_${{ matrix.base }}
       - name: merge
         run: |
-          echo "${HEAD}"
+          git switch ${{ matrix.head }}
+          echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
           git switch -c "${HEAD}"
+          diff=$(git diff --name-only "${BASE}" "${HEAD}")
+          if [ -z "$diff" ]; then
+            echo "No changes between ${BASE} and ${HEAD}"
+            exit 0
+          fi
           git push origin "${HEAD}"
           gh pr create --base "${BASE}" --head "${HEAD}" --title "Auto merge" --body "Auto merge"
           gh pr merge --merge --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD: ${{ matrix.head }}_to_${{ matrix.base }}
           BASE: ${{ matrix.base }}
       - name: Clean up
         if: always()
