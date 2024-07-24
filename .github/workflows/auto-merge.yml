@@ -1,16 +1,24 @@
-name: Auto merge
+name: QA Build Auto merge
 on:
-  pull_request:
   workflow_dispatch:
-
+  schedule:
+    - cron: "0 0 * * *"
 jobs:
-  merge:
-    if: ${{ github.actor == 'dependabot[bot]' }}
+  auto-merge:
+    strategy:
+      matrix:
+        base: [build/qa_a, build/qa_b, build/qa_c]
+        head: [feature/16.0.0]
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: merge
         run: |
-          echo "${GITHUB_HEAD_REF}"
-          gh pr merge "${GITHUB_HEAD_REF}" --merge
+          gh pr create --base ${{ matrix.base }} --head ${{ matrix.head }} --title "Auto merge" --body "Auto merge"
+          gh pr merge --merge --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
