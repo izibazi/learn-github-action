@@ -7,7 +7,7 @@ jobs:
   auto-merge:
     strategy:
       matrix:
-        base: [build/qa_a, build/qa_b]
+        base: [build/qa_a, build/qa_b, main]
         head: [feature/16.0.0]
     runs-on: ubuntu-latest
     permissions:
