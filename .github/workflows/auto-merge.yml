@@ -39,4 +39,4 @@ jobs:
         if: always()
         run: |
           echo "HEAD=${HEAD}"
-          git push origin --delete "${HEAD}"
+          # git push origin --delete "${HEAD}"
