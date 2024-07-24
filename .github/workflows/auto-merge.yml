@@ -21,6 +21,7 @@ jobs:
           git switch ${{ matrix.head }}
           echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
           git switch -c "${HEAD}"
+          git switch "${BASE}"
           diff=$(git diff --name-only "${BASE}" "${HEAD}")
           if [ -z "$diff" ]; then
             echo "No changes between ${BASE} and ${HEAD}"
