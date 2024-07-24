@@ -30,7 +30,7 @@ jobs:
           fi
           git push origin "${HEAD}"
           gh pr create --base "${BASE}" --head "${HEAD}" --title "Auto merge" --body "Auto merge"
-          gh pr merge --merge --auto
+          gh pr merge --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HEAD: ${{ matrix.head }}_to_${{ matrix.base }}
