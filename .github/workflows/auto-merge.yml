@@ -30,7 +30,7 @@ jobs:
           fi
           git switch "${HEAD}"
           git push origin -f "${HEAD}"
-          gh pr create --base "${BASE}" --head "${HEAD}" --title "$HEAD" --body "$HEAD"
+          gh pr create --base "${BASE}" --head "${HEAD}" --title "$HEAD \nこの PR は GitHub Actions によって生成されました。" --body "$HEAD"
           gh pr merge --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
