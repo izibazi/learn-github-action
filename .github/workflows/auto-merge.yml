@@ -16,12 +16,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: merge
+      - name: create head
         run: |
           git switch ${{ matrix.head }}
-          git switch -c $BRANCH
+          echo "${BRANCH}"
+          echo "BRANCH=$BRANCH" >> "${GITHUB_ENV}"
+        env:
+          BRANCH: ${{ matrix.head }}_to_${{ matrix.base }}
+      - name: merge
+        run: |
+          echo "${BRANCH}"
+          git switch -c "${BRANCH}"
+          git push origin "${BRANCH}"
           gh pr create --base ${{ matrix.base }} --head $BRANCH --title "Auto merge" --body "Auto merge"
           gh pr merge --merge --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: ${{ matrix.head }}_to_${{ matrix.base }}
+      - name: Clean up
+        if: always()
+        run: |
+          echo "BRANCH=${BRANCH}"
+          git push origin --delete "${BRANCH}"
