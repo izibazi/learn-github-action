@@ -30,11 +30,11 @@ jobs:
           fi
           git switch "${HEAD}"
           git push origin -f "${HEAD}"
-          gh pr create --base "${BASE}" --head "${HEAD}" --title "Auto merge" --body "Auto merge"
+          gh pr create --base "${BASE}" --head "${HEAD}" --title "Auto Merge $BASE into $HEAD" --body "Auto Merge $BASE into $HEAD"
           gh pr merge --merge --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HEAD: ${{ matrix.head }}_to_${{ matrix.base }}
+          HEAD: ${{ matrix.head }}_by_auto_merge
           BASE: ${{ matrix.base }}
       - name: Clean up
         if: always()
