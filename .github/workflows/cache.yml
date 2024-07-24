@@ -1,23 +1,24 @@
-name: Cache
-on: workflow_dispatch
-
+name: QA Build Auto merge
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
 jobs:
-  cache:
+  auto-merge:
+    strategy:
+      matrix:
+        base: [build/qa_a, build/qa_b, build/qa_c]
+        head: [feature/16.0.0]
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - uses: actions/cache@v4
-        with:
-          key: test-${{ runner.os }}-${{ github.sha }}
-          path: ${{ github.workspace }}/dummy
-          restore-keys: test-${{ runner.os }}-
-      - run: |
-          if [[ -f "${GITHUB_WORKSPACE}/dummy" ]]; then
-            echo "dummy exists"
-            exit 0;
-          fi
-          echo "save dummy"
-          dd if=/dev/urandom of="${GITHUB_WORKSPACE}/dummy" bs=1M count=10
-          sleep 20
-      - run: ls -lh "${GITHUB_WORKSPACE}/dummy"
+      - name: merge
+        run: |
+          gh pr create --base ${{ matrix.base }} --head ${{ matrix.head }} --title "Auto merge" --body "Auto merge"
+          gh pr merge --merge --auto
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
