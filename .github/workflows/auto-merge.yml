@@ -18,7 +18,10 @@ jobs:
         uses: actions/checkout@v4
       - name: merge
         run: |
-          gh pr create --base ${{ matrix.base }} --head ${{ matrix.head }} --title "Auto merge" --body "Auto merge"
+          git switch ${{ matrix.head }}
+          git switch -c $BRANCH
+          gh pr create --base ${{ matrix.base }} --head $BRANCH --title "Auto merge" --body "Auto merge"
           gh pr merge --merge --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: ${{ matrix.head }}_to_${{ matrix.base }}
