@@ -21,6 +21,7 @@ jobs:
           git switch ${{ matrix.head }}
           echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
           git switch -c "${HEAD}"
+          git fetch
           git switch "${BASE}"
           diff=$(git diff "${BASE}" "${HEAD}")
           if [ -z "$diff" ]; then
