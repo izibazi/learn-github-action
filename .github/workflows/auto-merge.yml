@@ -28,7 +28,7 @@ jobs:
             echo "No changes between ${BASE} and ${HEAD}"
             exit 0
           fi
-          git push origin "${HEAD}"
+          git push origin -f "${HEAD}"
           gh pr create --base "${BASE}" --head "${HEAD}" --title "Auto merge" --body "Auto merge"
           gh pr merge --merge --auto
         env:
