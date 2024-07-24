@@ -34,7 +34,7 @@ jobs:
           gh pr merge --merge --auto
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HEAD: ${{ matrix.head }}_by_auto_merge
+          HEAD: auto_merge_${{ matrix.head }}_into_${{ matrix.base }}
           BASE: ${{ matrix.base }}
       - name: Clean up
         if: always()
