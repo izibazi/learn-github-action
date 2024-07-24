@@ -22,7 +22,6 @@ jobs:
           echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
           git switch -c "${HEAD}"
           git fetch
-          git switch "${BASE}"
           diff=$(git diff "${BASE}" "${HEAD}")
           if [ -z "$diff" ]; then
             echo "No changes between ${BASE} and ${HEAD}"
