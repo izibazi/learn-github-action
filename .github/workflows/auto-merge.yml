@@ -20,6 +20,7 @@ jobs:
         run: |
           git switch ${{ matrix.head }}
           git switch -c $BRANCH
+          git push origin $BRANCH
           gh pr create --base ${{ matrix.base }} --head $BRANCH --title "Auto merge" --body "Auto merge"
           gh pr merge --merge --auto
         env:
