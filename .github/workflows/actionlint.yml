@@ -1,6 +1,6 @@
 name: Action lint
 on:
-  push:
+  pull_request:
     paths:
       - ".github/workflows/*.ya?ml"
 defaults:
