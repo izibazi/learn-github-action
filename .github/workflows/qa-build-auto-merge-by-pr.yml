@@ -1,4 +1,4 @@
-name: QA Build Auto Merge by PR
+name: QA Build Auto Merge
 on:
   schedule:
     - cron: "0 16 * * *"
@@ -8,8 +8,8 @@ jobs:
   auto-merge:
     strategy:
       matrix:
-        base: [build/qa_a, build/qa_b, feature/16.0.0]
-        head: [main]
+        base: [build/qa_a, build/qa_b, build/qa_c, build/qa_d, feature/16.1.0]
+        head: [feature/16.0.0]
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -23,10 +23,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Auto merge
         run: |
+          git fetch
           git switch ${{ matrix.head }}
           echo "HEAD=$HEAD" >> "${GITHUB_ENV}"
           git switch -c "${HEAD}"
-          git fetch
           git switch "${BASE}"
           diff=$(git diff "${BASE}" "${HEAD}")
           if [ -z "$diff" ]; then
