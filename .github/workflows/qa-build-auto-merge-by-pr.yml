@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - name: Dump context
-        run: echo "${CONTEXT}"
+        run: echo ${CONTEXT}
         env:
           CONTEXT: ${{ toJson(github) }}
       - name: Checkout
